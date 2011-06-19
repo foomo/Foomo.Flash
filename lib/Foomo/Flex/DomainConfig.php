@@ -16,10 +16,14 @@ class DomainConfig extends AbstractConfig {
 	const NAME = 'Foomo.Flash.flex';
 	/**
 	 * home
-	 * 
+	 *
 	 * @var string
 	 */
 	public $home = '/usr/local/flex_sdk';
+	/**
+	 * @deprecated not used any more
+	 * @var string
+	 */
 	public $generatedSrcDir;
 	public $srcDirs = array();
 
