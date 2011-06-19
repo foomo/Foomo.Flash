@@ -12,33 +12,26 @@ use Foomo\CliCall;
  * utilty class for compiling, packaging and stream of AS / MXML classes and packages
  *
  */
-class Utils {
-
-	private static $additionalCompilerArgs = array();
-
-	public static function resetCompilerArgs()
-	{
-		self::$additionalCompilerArgs = array();
-	}
-
-	public static function addCompilerArg($arg)
-	{
-		self::$additionalCompilerArgs[] = $arg;
-	}
+class Utils
+{
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
+	//---------------------------------------------------------------------------------------------
 
 	/**
 	 * compile a library SWC
 	 *
 	 * @param string $report all compiler output etc will be appended
+	 * @param string @sdkPath Path to the flex sdk to use
 	 * @param array $sourcePaths where to look for sources
 	 * @param array $includePaths what directories to include
 	 * @param array $externalLibs what compiled libs i.e. swc¬¨¬•s to include
 	 *
 	 * @return string name of the swc
 	 */
-	public static function compileLibrarySWC(&$report, $sourcePaths, $includePaths, $externalLibs = array(), $classes = array())
+	public static function compileLibrarySWC(&$report, $sdkPath, $sourcePaths, $includePaths, $externalLibs = array(), $classes = array())
 	{
-		if (self::checkCompiler($report)) {
+		if (self::checkCompiler($report, $sdkPath)) {
 			$swcName = tempnam(realpath(sys_get_temp_dir()), __CLASS__ . 'CompileSwc-') . '.swc';
 
 			self::appendOptionArgs($args, '-source-path', $sourcePaths);
@@ -46,44 +39,41 @@ class Utils {
 			self::appendOptionArgs($args, '-include-sources', $includePaths);
 			self::appendOptionArgs($args, '-include-classes', $classes);
 
-			//$args[] = '-compute-digest=false';
-			//$args[] = '-include-lookup-only=true';
-			//$args[] = '-keep-generated-actionscript';
-			//$args[] = '-static-link-runtime-shared-libraries=false';
-			//$args[] = '-link-report';
-			//$args[] = '/tmp/linkreport.xml';
-			//$args[] = '-dump-config=/tmp/creationConfig.xml';
-
-			self::mergeCompilerArgs($args);
+			/*
+			$args[] = '-compute-digest=false';
+			$args[] = '-include-lookup-only=true';
+			$args[] = '-keep-generated-actionscript';
+			$args[] = '-static-link-runtime-shared-libraries=false';
+			$args[] = '-link-report';
+			$args[] = '/tmp/linkreport.xml';
+			$args[] = '-dump-config=/tmp/creationConfig.xml';
+			 */
 
 			$args[] = '-output';
 			$args[] = $swcName;
 
-
-
-			$cliCall = new CliCall(
-							self::getCompilerCommand(),
-							$args,
-							array(
-								'FLEX_HOME' => Settings::$FLEX_HOME
-							)
-			);
+			$cliCall = new CliCall(self::getCompilerCommand($sdkPath), $args, array('FLEX_HOME' => $sdkPath));
 			$cliCall->execute();
+
 			$report .= $cliCall->report;
 			return $swcName;
 		}
 	}
 
-	private static function mergeCompilerArgs(&$args)
-	{
-		foreach (self::$additionalCompilerArgs as $additionalComilerArg) {
-			$args[] = $additionalComilerArg;
-		}
-	}
 
-	public static function compileLibrarySwf(&$report, $sourcePaths, $includePaths, $externalLibs = array(), $classes = array())
+	/**
+	 * @todo do we still support this?
+	 *
+	 * @param string $report
+	 * @param string $sdkPath
+	 * @param string[] $sourcePaths
+	 * @param string[] $includePaths
+	 * @param string[] $externalLibs
+	 * @param string[] $classes
+	 * @return string
+	public static function compileLibrarySwf(&$report, $sdkPath, $sourcePaths, $includePaths, $externalLibs = array(), $classes = array())
 	{
-		if (self::checkCompiler($report)) {
+		if (self::checkCompiler($report, $sdkPath)) {
 			$folder = tempnam(realpath(sys_get_temp_dir()), __CLASS__ . 'CompileSwc');
 			unlink($folder);
 			mkdir($folder);
@@ -92,53 +82,28 @@ class Utils {
 			self::appendOptionArgs($args, '-include-sources', $includePaths);
 			self::appendOptionArgs($args, '-include-classes', $classes);
 
-			foreach (self::$additionalCompilerArgs as $additionalComilerArg) {
-				$args[] = $additionalComilerArg;
-			}
-
-			self::mergeCompilerArgs($args);
-
 			$args[] = '-directory';
 			$args[] = '-output';
 			$args[] = $folder;
 
-
-			$cliCall = new CliCall(
-							self::getCompilerCommand(),
-							$args,
-							array(
-								'FLEX_HOME' => Settings::$FLEX_HOME
-							)
-			);
+			$cliCall = new CliCall(self::getCompilerCommand($sdkPath), $args, array('FLEX_HOME' => $sdkPath));
 			$cliCall->execute();
+
 			$report .= $cliCall->report;
 			return $folder . DIRECTORY_SEPARATOR . 'library.swf';
 		}
 	}
+	 */
 
-	private static function checkEnv(&$report)
-	{
-		if (is_null(Settings::$FLEX_HOME)) {
-			$error = 'Foomo\Flash\Settings::$FLEX_HOME is not set';
-			trigger_error($error, E_USER_WARING);
-			$report .= $error . PHP_EOL;
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	private static function appendOptionArgs(&$args, $option, $optionArgs)
-	{
-		if (count($optionArgs) > 0) {
-			$args[] = $option;
-			foreach ($optionArgs as $optionArg) {
-				$args[] = $optionArg;
-			}
-		}
-	}
-
-	public static function compileDocs(&$report, $sourcePaths, $libraryPaths = array())
+	/**
+	 * @todo do we still support this?
+	 *
+	 * @param string $report
+	 * @param string @sdkPath Path to the flex sdk to use
+	 * @param string[] $sourcePaths
+	 * @param string[] $libraryPaths
+	 * @return string
+	public static function compileDocs(&$report, $sdkPath, $sourcePaths, $libraryPaths = array())
 	{
 		$tempnam = tempnam(realpath(sys_get_temp_dir()), 'ASDOC-');
 		unlink($tempnam);
@@ -150,26 +115,31 @@ class Utils {
 			$args = array_merge($args, $libraryPaths);
 		}
 
-		self::mergeCompilerArgs($args);
-
 		$args[] = '-doc-sources';
 		$args = array_merge($args, $sourcePaths);
 		$args[] = '-output';
 		$args[] = $tempnam;
 
-		$call = new CliCall(
-						self::getDocCommand(),
-						$args
-		);
+		$call = new CliCall(self::getDocCommand($sdkPath), $args);
 		$call->execute();
+
 		$report .= $call->report;
 		echo $report;
 		return $tempnam;
 	}
+	 */
 
-	public static function compileClassesToSwc(&$report, $sourcePaths, $classes)
+	/**
+	 * @todo do we still support this?
+	 *
+	 * @param string $report
+	 * @param string @sdkPath Path to the flex sdk to use
+	 * @param string[] $sourcePaths
+	 * @param string[] $classes
+	 * @return string
+	public static function compileClassesToSwc(&$report, $sdkPath, $sourcePaths, $classes)
 	{
-		if (self::checkCompiler($report)) {
+		if (self::checkCompiler($report, $sdkPath)) {
 			$swcName = tempnam(realpath(sys_get_temp_dir()), __CLASS__ . 'CompileSwc-') . '.swc';
 
 			$args = array('-output');
@@ -178,102 +148,73 @@ class Utils {
 			$args = array_merge($args, $sourcePaths);
 			$args[] = '-include-classes';
 			$args = array_merge($args, $classes);
-			self::mergeCompilerArgs($args);
-			$cliCall = new CliCall(
-							self::getCompilerCommand(),
-							$args,
-							array(
-								'FLEX_HOME' => Settings::$FLEX_HOME
-							)
-			);
+
+			$cliCall = new CliCall(self::getCompilerCommand($sdkPath), $args, array('FLEX_HOME' => $sdkPath));
 			$cliCall->execute();
+
 			$report .= $cliCall->report;
 			return $swcName;
 		}
 	}
-
-	/**
-	 * get the flex compc
-	 *
-	 * @return string the compc command with its path
 	 */
-	private static function getCompilerCommand()
-	{
-		return Settings::$FLEX_HOME . '/bin/compc';
-	}
-
-	/**
-	 * get the flex compc
-	 *
-	 * @return string the compc command with its path
-	 */
-	private static function getDocCommand()
-	{
-		return Settings::$FLEX_HOME . '/bin/asdoc';
-	}
-
-	/**
-	 * check if a compc -version call exits with 0 or not
-	 *
-	 * @param string $error stdError output of the call
-	 *
-	 * @return boolean
-	 */
-	public static function checkCompiler(&$error)
-	{
-		if (self::checkEnv($error)) {
-			$call = new CliCall(
-							self::getCompilerCommand(),
-							array(
-								'-version'
-							)
-			);
-			$call->execute();
-			//$error = $call->stdErr;
-			if ($call->exitStatus === 0) {
-				return true;
-			} else {
-				$error .= 'compiler check failed : ' . $call->stdErr . PHP_EOL;
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-
-	/**
-	 * stream a source archive
-	 *
-	 * @param string $fileName of the tgz
-	 */
-	public static function streamTgz($filename)
-	{
-		self::stream($filename, 'application/x-compressed');
-	}
-
-	/**
-	 * stream a swc
-	 *
-	 * @param string $fileName of the swc
-	 */
-	public static function streamSWC($filename)
-	{
-		self::stream($filename, 'application/octet-stream');
-	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Private static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @param string $filename
-	 * @param string $mime
+	 * check if a compc -version call exits with 0 or not
+	 *
+	 * @param string $error stdError output of the call
+	 * @param string @sdkPath Path to the flex sdk to use
+	 * @return boolean
 	 */
-	private static function stream($filename, $mime)
+	private static function checkCompiler(&$error, $sdkPath)
 	{
-		if (!\Foomo\Utils::streamFile($filename, basename($filename), $mime, true)) {
-			die('resource not available : ' . $filename);
+		$call = new CliCall(self::getCompilerCommand($sdkPath), array('-version'));
+		$call->execute();
+		if ($call->exitStatus === 0) {
+			return true;
+		} else {
+			$error .= 'compiler check failed : ' . $call->stdErr . PHP_EOL;
+			return false;
 		}
+	}
+
+	/**
+	 * get the flex compc
+	 *
+	 * @param string @sdkPath Path to the flex sdk to use
+	 * @return string the compc command with its path
+	 */
+	private static function getCompilerCommand($sdkPath)
+	{
+		return $sdkPath . '/bin/compc';
+	}
+
+	/**
+	 * @param string[] $args
+	 * @param string $option
+	 * @param string[] $optionArgs
+	 */
+	private static function appendOptionArgs(&$args, $option, $optionArgs)
+	{
+		if (count($optionArgs) > 0) {
+			$args[] = $option;
+			foreach ($optionArgs as $optionArg) {
+				$args[] = $optionArg;
+			}
+		}
+	}
+
+	/**
+	 * get the flex compc
+	 *
+	 * @param string @sdkPath Path to the flex sdk to use
+	 * @return string the compc command with its path
+	 */
+	private static function getDocCommand($sdkPath)
+	{
+		return $sdkPath . '/bin/asdoc';
 	}
 }
