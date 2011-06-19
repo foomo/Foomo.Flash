@@ -33,7 +33,7 @@ class Utils {
 	 * @param array $sourcePaths where to look for sources
 	 * @param array $includePaths what directories to include
 	 * @param array $externalLibs what compiled libs i.e. swc¬¨¬•s to include
-	 * 
+	 *
 	 * @return string name of the swc
 	 */
 	public static function compileLibrarySWC(&$report, $sourcePaths, $includePaths, $externalLibs = array(), $classes = array())
@@ -216,7 +216,7 @@ class Utils {
 	 * check if a compc -version call exits with 0 or not
 	 *
 	 * @param string $error stdError output of the call
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public static function checkCompiler(&$error)
@@ -241,32 +241,15 @@ class Utils {
 		}
 	}
 
-	/**
-	 * pack a directory with sources as a .tgz
-	 *
-	 * @return string name of a temporary file
-	 */
-	public static function packSourcesAsTgz()
-	{
-		
-	}
 
 	/**
 	 * stream a source archive
 	 *
 	 * @param string $fileName of the tgz
 	 */
-	public static function streamSourcesAsTgz($filename)
+	public static function streamTgz($filename)
 	{
-		$mime = 'application/x-compressed';
-		self::stream($filename, $mime);
-	}
-
-	private static function stream($filename, $mime)
-	{
-		if (!\Foomo\Utils::streamFile($filename, basename($filename), $mime, true)) {
-			die('resource not available : ' . $filename);
-		}
+		self::stream($filename, 'application/x-compressed');
 	}
 
 	/**
@@ -276,8 +259,21 @@ class Utils {
 	 */
 	public static function streamSWC($filename)
 	{
-		$mime = 'application/octet-stream';
-		self::stream($filename, $mime);
+		self::stream($filename, 'application/octet-stream');
 	}
 
+	//---------------------------------------------------------------------------------------------
+	// ~ Private static methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @param string $filename
+	 * @param string $mime
+	 */
+	private static function stream($filename, $mime)
+	{
+		if (!\Foomo\Utils::streamFile($filename, basename($filename), $mime, true)) {
+			die('resource not available : ' . $filename);
+		}
+	}
 }
