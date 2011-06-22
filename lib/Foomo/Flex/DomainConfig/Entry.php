@@ -11,6 +11,10 @@ class Entry
 	/**
 	 * @var string
 	 */
+	public $id;
+	/**
+	 * @var string
+	 */
 	public $name;
 	/**
 	 * @var string

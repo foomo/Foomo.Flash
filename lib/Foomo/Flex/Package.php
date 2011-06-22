@@ -10,10 +10,14 @@ namespace Foomo\Flex;
  * object describing a flex source package
  *
  */
-class Package {
+class Package
+{
+	//---------------------------------------------------------------------------------------------
+	// ~ Variables
+	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * directory where the package sources are 
+	 * directory where the package sources are
 	 *
 	 * @var string
 	 */

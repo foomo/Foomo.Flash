@@ -52,6 +52,7 @@ class DomainConfig extends AbstractConfig
 	{
 		if (!isset($this->entries[$id])) throw new \Exception('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!');
 		$entry = new DomainConfig\Entry();
+		$entry->id = $id;
 		$entry->name = $this->entries[$id]['name'];
 		$entry->sdkPath = $this->entries[$id]['sdkPath'];
 		$entry->sourcePaths = $this->entries[$id]['sourcePaths'];
