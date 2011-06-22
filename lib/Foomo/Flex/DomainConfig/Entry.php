@@ -24,4 +24,8 @@ class Entry
 	 * @var string[]
 	 */
 	public $sourcePaths = array();
+	/**
+	 * @var string[]
+	 */
+	public $externalLibs = array();
 }
