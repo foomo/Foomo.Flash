@@ -36,6 +36,18 @@ class Module extends ModuleBase
 	}
 
 	/**
+	 * get all the module resources
+	 *
+	 * @return Foomo\Modules\Resource[]
+	 */
+	public static function getResources()
+	{
+		return array(
+			\Foomo\Modules\Resource\Config::getResource(self::NAME, \Foomo\Flex\DomainConfig::NAME),
+		);
+	}
+
+	/**
 	 * Get a plain text description of what this module does
 	 *
 	 * @return string
