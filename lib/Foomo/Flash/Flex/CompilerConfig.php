@@ -6,7 +6,18 @@
 
 namespace Foomo\Flash\Flex;
 
+<<<<<<< HEAD:lib/Foomo/Flash/Flex/CompilerConfig.php
 class CompilerConfig extends \Foomo\Config\AbstractConfig
+=======
+use \Foomo\Config\AbstractConfig;
+use \Foomo\Config;
+use \Exception;
+
+/**
+ * flash / flex config
+ */
+class DomainConfig extends AbstractConfig
+>>>>>>> 6a52e0a8399390519fcc5e9df4a6d44cec2bcf21:lib/Foomo/Flex/DomainConfig.php
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constants
@@ -53,8 +64,13 @@ class CompilerConfig extends \Foomo\Config\AbstractConfig
 		$entry->sourcePaths = $this->entries[$id]['sourcePaths'];
 		$entry->externalLibs = $this->entries[$id]['externalLibs'];
 		if (!is_dir($entry->sdkPath)) throw new \Exception('Configured flex SDK path does not exist ' . $entry->sdkPath);
+<<<<<<< HEAD:lib/Foomo/Flash/Flex/CompilerConfig.php
 		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new \Exception('Configured source ' . $source . ' does not exist!');
 		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new \Exception('Configured source ' . $source . ' does not exist!');
+=======
+		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new Exception('Configured source >' . $source . '< does not exist!');
+		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new Exception('Configured source >' . $source . '< does not exist!');
+>>>>>>> 6a52e0a8399390519fcc5e9df4a6d44cec2bcf21:lib/Foomo/Flex/DomainConfig.php
 		return $entry;
 	}
 }
