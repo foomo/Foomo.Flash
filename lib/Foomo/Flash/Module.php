@@ -43,7 +43,7 @@ class Module extends ModuleBase
 	public static function getResources()
 	{
 		return array(
-			\Foomo\Modules\Resource\Config::getResource(self::NAME, \Foomo\Flex\DomainConfig::NAME),
+			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Flash.flex'),
 		);
 	}
 
