@@ -8,6 +8,7 @@ namespace Foomo\Flex;
 
 use \Foomo\Config\AbstractConfig;
 use \Foomo\Config;
+use \Exception;
 
 /**
  * flash / flex config
@@ -59,8 +60,8 @@ class DomainConfig extends AbstractConfig
 		$entry->sourcePaths = $this->entries[$id]['sourcePaths'];
 		$entry->externalLibs = $this->entries[$id]['externalLibs'];
 		if (!is_dir($entry->sdkPath)) throw new \Exception('Configured flex SDK path does not exist ' . $entry->sdkPath);
-		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new Exception('Configured source ' . $source . ' does not exist!');
-		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new Exception('Configured source ' . $source . ' does not exist!');
+		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new Exception('Configured source >' . $source . '< does not exist!');
+		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new Exception('Configured source >' . $source . '< does not exist!');
 		return $entry;
 	}
 
