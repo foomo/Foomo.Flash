@@ -4,21 +4,15 @@
  * bestbytes-copyright-placeholder
  */
 
-namespace Foomo\Flex;
+namespace Foomo\Flash\Flex;
 
-use \Foomo\Config\AbstractConfig;
-use \Foomo\Config;
-
-/**
- * flash / flex config
- */
-class DomainConfig extends AbstractConfig
+class CompilerConfig extends \Foomo\Config\AbstractConfig
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constants
 	//---------------------------------------------------------------------------------------------
 
-	const NAME = 'Foomo.Flash.flex';
+	const NAME = 'Foomo.Flash.compilerConfig';
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Variables
@@ -47,32 +41,20 @@ class DomainConfig extends AbstractConfig
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @return Foomo\Flex\DomainConfig\Entry
+	 * @return Foomo\Flash\Flex\CompilerConfig\Entry
 	 */
 	public function getEntry($id)
 	{
 		if (!isset($this->entries[$id])) throw new \Exception('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!');
-		$entry = new DomainConfig\Entry();
+		$entry = new \Foomo\Flash\Flex\CompilerConfig\Entry();
 		$entry->id = $id;
 		$entry->name = $this->entries[$id]['name'];
 		$entry->sdkPath = $this->entries[$id]['sdkPath'];
 		$entry->sourcePaths = $this->entries[$id]['sourcePaths'];
 		$entry->externalLibs = $this->entries[$id]['externalLibs'];
 		if (!is_dir($entry->sdkPath)) throw new \Exception('Configured flex SDK path does not exist ' . $entry->sdkPath);
-		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new Exception('Configured source ' . $source . ' does not exist!');
-		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new Exception('Configured source ' . $source . ' does not exist!');
+		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new \Exception('Configured source ' . $source . ' does not exist!');
+		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new \Exception('Configured source ' . $source . ' does not exist!');
 		return $entry;
-	}
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Public static methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 * @return \Foomo\Flex\DomainConfig
-	 */
-	public static function getInstance()
-	{
-		return Config::getConf(\Foomo\Flash\Module::NAME, self::NAME);
 	}
 }

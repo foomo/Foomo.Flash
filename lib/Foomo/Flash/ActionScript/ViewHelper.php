@@ -121,27 +121,4 @@ class ViewHelper
 		}
 		return implode(', ', $output);
 	}
-
-	/**
-	 * name => ServiceObjectType
-	 *
-	 * @param $props[] $params
-	 * @param boolean $includeType
-	 * @param boolean $includeThis
-	 * @return string
-	 */
-	public static function renderProperties($props, $includeType=true, $includeThis=false)
-	{
-		$output = array();
-		foreach($props as $name => $type) {
-			if ($includeType) {
-				$output[] = $name . ':' . PHPUtils::getASType($type->type);
-			} else if (!$includeType && !$includeThis) {
-				$output[] = $name;
-			} else {
-				$output[] = 'this.' . $name;
-			}
-		}
-		return implode(', ', $output);
-	}
 }

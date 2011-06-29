@@ -24,7 +24,7 @@ class Module extends ModuleBase
 	const NAME = 'Foomo.Flash';
 
 	//---------------------------------------------------------------------------------------------
-	// ~ Public static methods
+	// ~ Overriden static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
@@ -32,7 +32,6 @@ class Module extends ModuleBase
 	 */
 	public static function initializeModule()
 	{
-		$flexConfig = \Foomo\Flex\DomainConfig::getInstance();
 	}
 
 	/**
@@ -43,7 +42,7 @@ class Module extends ModuleBase
 	public static function getResources()
 	{
 		return array(
-			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Flash.flex'),
+			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Flash.compilerConfig'),
 		);
 	}
 
@@ -55,5 +54,17 @@ class Module extends ModuleBase
 	public static function getDescription()
 	{
 		return 'Adobe Flash (tm)(r) Integration';
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @return Foomo\Flash\Flex\CompilerConfig
+	 */
+	public static function getCompilerConfig()
+	{
+		return self::getConfig('Foomo.Flash.compilerConfig');
 	}
 }

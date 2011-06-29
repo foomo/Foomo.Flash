@@ -1,6 +1,6 @@
 <?php
 
-namespace Foomo\Flex\DomainConfig;
+namespace Foomo\Flash\Flex\CompilerConfig;
 
 class Entry
 {
