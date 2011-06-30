@@ -63,16 +63,21 @@ class CompilerConfig extends \Foomo\Config\AbstractConfig
 	 */
 	public function getEntry($id)
 	{
-		if (!isset($this->entries[$id])) throw new \Exception('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!');
-		$entry = new \Foomo\Flash\Flex\CompilerConfig\Entry();
-		$entry->id = $id;
-		$entry->name = $this->entries[$id]['name'];
-		$entry->sdkPath = $this->entries[$id]['sdkPath'];
-		$entry->sourcePaths = $this->entries[$id]['sourcePaths'];
-		$entry->externalLibs = $this->entries[$id]['externalLibs'];
-		if (!is_dir($entry->sdkPath)) throw new \Exception('Configured flex SDK path does not exist ' . $entry->sdkPath);
-		foreach ($entry->sourcePaths as $source) if (!file_exists($source)) throw new \Exception('Configured source ' . $source . ' does not exist!');
-		foreach ($entry->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new \Exception('Configured source ' . $source . ' does not exist!');
-		return $entry;
+		if (null == $entry = $this->entries[$id]) throw new \Exception('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!');
+		$ret = \Foomo\Flash\Flex\CompilerConfig\Entry::create($id, $entry['name'], $entry['sdkPath'], $entry['sourcePaths'], $entry['externalLibs']);
+		if (!is_dir($ret->sdkPath)) throw new \Exception('Configured flex SDK path does not exist ' . $ret->sdkPath);
+		foreach ($ret->sourcePaths as $source) if (!file_exists($source)) throw new \Exception('Configured source ' . $source . ' does not exist!');
+		foreach ($ret->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new \Exception('Configured source ' . $source . ' does not exist!');
+		return $ret;
+	}
+
+	/**
+	 * @return Foomo\Flash\Flex\CompilerConfig\Entry[]
+	 */
+	public function getEntries()
+	{
+		$entries = array();
+		foreach ($this->entries as $id => $entry) $entries[] = $this->getEntry($id);
+		return $entries;
 	}
 }

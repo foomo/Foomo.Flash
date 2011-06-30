@@ -50,4 +50,40 @@ class Entry
 	 * @var string[]
 	 */
 	public $externalLibs = array();
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Constructor
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @param string $id
+	 * @param string $name
+	 * @param string $sdkPath
+	 * @param array $sourcePaths
+	 * @param array $externalLibs
+	 */
+	public function __construct($id, $name, $sdkPath, array $sourcePaths=array(), array $externalLibs=array())
+	{
+		$this->id = $id;
+		$this->name = $name;
+		$this->sdkPath = $sdkPath;
+		$this->sourcePaths = $sourceFilename;
+		$this->externalLibs = $externalLibs;
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @param string $id
+	 * @param string $name
+	 * @param string $sdkPath
+	 * @param array $sourcePaths
+	 * @param array $externalLibs
+	 */
+	public static function create($id, $name, $sdkPath, array $sourcePaths=array(), array $externalLibs=array())
+	{
+		return new self($id, $name, $sdkPath, $sourcePaths, $externalLibs);
+	}
 }
