@@ -67,7 +67,7 @@ class Entry
 		$this->id = $id;
 		$this->name = $name;
 		$this->sdkPath = $sdkPath;
-		$this->sourcePaths = $sourceFilename;
+		$this->sourcePaths = $sourcePaths;
 		$this->externalLibs = $externalLibs;
 	}
 
