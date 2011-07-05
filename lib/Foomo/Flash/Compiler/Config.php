@@ -17,14 +17,14 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Flash\Flex;
+namespace Foomo\Flash\Compiler;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class CompilerConfig extends \Foomo\Config\AbstractConfig
+class Config extends \Foomo\Config\AbstractConfig
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constants
@@ -59,12 +59,12 @@ class CompilerConfig extends \Foomo\Config\AbstractConfig
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @return Foomo\Flash\Flex\CompilerConfig\Entry
+	 * @return Foomo\Flash\Compiler\Config\Entry
 	 */
 	public function getEntry($id)
 	{
 		if (null == $entry = $this->entries[$id]) throw new \Exception('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!');
-		$ret = \Foomo\Flash\Flex\CompilerConfig\Entry::create(
+		$ret = \Foomo\Flash\Compiler\Config\Entry::create(
 				$id,
 				$entry['name'],
 				$entry['sdkPath'],
@@ -78,7 +78,7 @@ class CompilerConfig extends \Foomo\Config\AbstractConfig
 	}
 
 	/**
-	 * @return Foomo\Flash\Flex\CompilerConfig\Entry[]
+	 * @return Foomo\Flash\Compiler\Config\Entry[]
 	 */
 	public function getEntries()
 	{

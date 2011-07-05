@@ -120,24 +120,30 @@ class Compc extends \Foomo\CliCall
 
 	/**
 	 * @param string $filename output filename
+	 * @param boolean $debug
+	 * @param boolean $optimize
 	 * @return Foomo\CliCall\Compc
 	 */
-	public function compileSwc($filename)
+	public function compileSwc($filename, $debug=true, $optimize=false)
 	{
 		$this->prepareArguments();
 		$this->addArguments(array('-output', $filename));
+		$this->addArguments(array('-debug=' . (($debug) ? 'true' : 'false'), '-optimize=' . (($optimize) ? 'true' : 'false')));
 		$this->execute();
 		return $this;
 	}
 
 	/**
 	 * @param string $filename output filename
+	 * @param boolean $debug
+	 * @param boolean $optimize
 	 * @return Foomo\CliCall\Compc
 	 */
-	public function compileSwf($filename)
+	public function compileSwf($filename, $debug=true, $optimize=false)
 	{
 		$this->prepareArguments();
 		$this->addArguments(array('-directory', '-output', $filename));
+		$this->addArguments(array('-debug=' . (($debug) ? 'true' : 'false'), '-optimize=' . (($optimize) ? 'true' : 'false')));
 		$this->execute();
 		return $this;
 	}

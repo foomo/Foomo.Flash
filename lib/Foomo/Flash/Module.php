@@ -25,7 +25,7 @@ namespace Foomo\Flash;
  * @author franklin <franklin@weareinteractive.com>
  * @author jan <jan@bestbytes.de>
  */
-class Module extends \Foomo\Modules\ModuleBase
+class Module extends \Foomo\Modules\ModuleBase implements \Foomo\Frontend\ToolboxInterface
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constants
@@ -46,6 +46,11 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function initializeModule()
 	{
+		if (!self::confExists(Vendor\Config::NAME)) {
+			self::setConfig(Vendor\Config::create(array(
+				'Foomo.Flash/vendor/org.foomo'
+			)));
+		}
 	}
 
 	/**
@@ -56,7 +61,11 @@ class Module extends \Foomo\Modules\ModuleBase
 	public static function getResources()
 	{
 		return array(
+			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Flash.vendorConfig'),
 			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Flash.compilerConfig'),
+			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Flash.libraryGeneratorConfig'),
+			\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'tmp' . DIRECTORY_SEPARATOR . self::NAME),
+			\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'modules' . DIRECTORY_SEPARATOR . self::NAME)
 		);
 	}
 
@@ -75,10 +84,40 @@ class Module extends \Foomo\Modules\ModuleBase
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @return Foomo\Flash\Flex\CompilerConfig
+	 * @return Foomo\Flash\Vendor\Config
+	 */
+	public static function getVendorConfig()
+	{
+		return self::getConfig('Foomo.Flash.vendorConfig');
+	}
+
+	/**
+	 * @return Foomo\Flash\Compiler\Config
 	 */
 	public static function getCompilerConfig()
 	{
 		return self::getConfig('Foomo.Flash.compilerConfig');
+	}
+
+	/**
+	 * @return Foomo\Flash\LibraryGenerator\Config
+	 */
+	public static function getLibraryGeneratorConfig()
+	{
+		return self::getConfig('Foomo.Flash.libraryGeneratorConfig');
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Toolbox interface methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @return array
+	 */
+	public static function getMenu()
+	{
+		return array(
+			\Foomo\Frontend\ToolboxConfig\MenuEntry::create('Root.Modules.Flash.LibraryGenerator', 'Library Generator', self::NAME, 'Foomo.Flash.LibraryGenerator'),
+		);
 	}
 }

@@ -17,73 +17,53 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Flash\Flex\CompilerConfig;
+namespace Foomo\Flash\Vendor;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Entry
+class SourcesTest extends \PHPUnit_Framework_TestCase
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Variables
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @var string
+	 * @var Foomo\Flash\Vendor\Sources
 	 */
-	public $id;
-	/**
-	 * @var string
-	 */
-	public $name;
-	/**
-	 * @var string
-	 */
-	public $sdkPath;
-	/**
-	 * @var string[]
-	 */
-	public $sourcePaths = array();
-	/**
-	 * @var string[]
-	 */
-	public $externalLibs = array();
+	private $sources;
 
 	//---------------------------------------------------------------------------------------------
-	// ~ Constructor
+	// ~ Setup
 	//---------------------------------------------------------------------------------------------
 
-	/**
-	 * @param string $id
-	 * @param string $name
-	 * @param string $sdkPath
-	 * @param array $sourcePaths
-	 * @param array $externalLibs
-	 */
-	public function __construct($id, $name, $sdkPath, array $sourcePaths=array(), array $externalLibs=array())
+	public function setUp()
 	{
-		$this->id = $id;
-		$this->name = $name;
-		$this->sdkPath = $sdkPath;
-		$this->sourcePaths = $sourcePaths;
-		$this->externalLibs = $externalLibs;
+		$this->sources = new \Foomo\Flash\Vendor\Sources(array(\Foomo\Flash\Module::getBaseDir('vendor/org.foomo')));
 	}
 
 	//---------------------------------------------------------------------------------------------
-	// ~ Public static methods
+	// ~ Test methods
 	//---------------------------------------------------------------------------------------------
 
-	/**
-	 * @param string $id
-	 * @param string $name
-	 * @param string $sdkPath
-	 * @param array $sourcePaths
-	 * @param array $externalLibs
-	 */
-	public static function create($id, $name, $sdkPath, array $sourcePaths=array(), array $externalLibs=array())
+	public function testUpdateProjects()
 	{
-		return new self($id, $name, $sdkPath, $sourcePaths, $externalLibs);
+		$this->sources = new \Foomo\Flash\Vendor\Sources(array(\Foomo\Flash\Module::getBaseDir('vendor/org.foomo')), false);
+		$this->assertTrue((count($this->sources->getLibraryProjects()) == 0));
+		$this->sources->updateProjects();
+		$this->assertTrue((count($this->sources->getLibraryProjects()) == 0));
+		$this->assertTrue((count($this->sources->getLibraryProjects(false)) > 0));
+	}
+
+	public function testGetLibraryProject()
+	{
+		$this->assertNotNull($this->sources->getLibraryProject(\Foomo\Flash\VendorTest::CORE_LIBRARY_ID));
+	}
+
+	public function testGetLibraryProjects()
+	{
+		$this->assertEquals(\Foomo\Flash\VendorTest::LIBRARY_COUNT, count($this->sources->getLibraryProjects(false)));
 	}
 }
