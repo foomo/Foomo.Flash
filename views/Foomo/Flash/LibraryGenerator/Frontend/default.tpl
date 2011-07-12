@@ -48,7 +48,7 @@
 					<td><?= $view->escape($libraryProject->description) ?></td>
 					<td><?= $view->escape(implode(', ', $libraryProject->dependencies)) ?></td>
 					<td><?= $view->escape($libraryProject->version) ?></td>
-					<td><?= $view->link('download', 'getLibrary', array($libraryProject->id), array('class' => 'getLibraryLink')) ?></td>
+					<td><?= $view->link('download', 'getLibrary', array($libraryProject->id), array('class' => 'getLibraryLink linkButtonYellow')) ?></td>
 					<td><input class="libraryProject" value="<?= $libraryProject->id ?>" name="projectLibraryIds[]" type="checkbox" dependencies="<?= implode(',', $libraryProject->dependencies) ?>"></input></td>
 				</tr>
 	<? endforeach; ?>
