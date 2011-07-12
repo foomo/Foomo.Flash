@@ -156,7 +156,7 @@ class Sources
 	 */
 	public function getLibrary($projectId)
 	{
-		return (isset($this->libraries[$projectId])) ? $this->libraries[$projectId] : false;
+		return (isset($this->libraries[$projectId])) ? $this->libraries[$projectId] : null;
 	}
 
 	/**

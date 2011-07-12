@@ -41,7 +41,7 @@ class SourcesTest extends \PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-		$this->sources = new \Foomo\Flash\Vendor\Sources(array(\Foomo\Flash\Module::getBaseDir('vendor/org.foomo')));
+		$this->sources = new \Foomo\Flash\Vendor\Sources(array(\Foomo\Flash\Module::getVendorDir('org.foomo')));
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ class SourcesTest extends \PHPUnit_Framework_TestCase
 
 	public function testUpdateProjects()
 	{
-		$this->sources = new \Foomo\Flash\Vendor\Sources(array(\Foomo\Flash\Module::getBaseDir('vendor/org.foomo')), false);
+		$this->sources = new \Foomo\Flash\Vendor\Sources(array(\Foomo\Flash\Module::getVendorDir('org.foomo')), false);
 		$this->assertTrue((count($this->sources->getLibraryProjects()) == 0));
 		$this->sources->updateProjects();
 		$this->assertTrue((count($this->sources->getLibraryProjects()) == 0));
@@ -59,11 +59,11 @@ class SourcesTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetLibraryProject()
 	{
-		$this->assertNotNull($this->sources->getLibraryProject(\Foomo\Flash\VendorTest::CORE_LIBRARY_ID));
+		$this->assertNotNull($this->sources->getLibraryProject(\Foomo\Flash\Tests\VendorHelper::CORE_LIBRARY_ID));
 	}
 
 	public function testGetLibraryProjects()
 	{
-		$this->assertEquals(\Foomo\Flash\VendorTest::LIBRARY_COUNT, count($this->sources->getLibraryProjects(false)));
+		$this->assertEquals(\Foomo\Flash\Tests\VendorHelper::LIBRARY_COUNT, count($this->sources->getLibraryProjects(false)));
 	}
 }

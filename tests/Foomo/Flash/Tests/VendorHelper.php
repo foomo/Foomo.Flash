@@ -17,29 +17,20 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Flash;
+namespace Foomo\Flash\Tests;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class VendorTest extends \PHPUnit_Framework_TestCase
+class VendorHelper
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Setup
+	// ~ Constants
 	//---------------------------------------------------------------------------------------------
 
-	public function setUp()
-	{
-	}
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Test methods
-	//---------------------------------------------------------------------------------------------
-
-	public function testGetSources()
-	{
-		$this->assertNotNull(Vendor::getSources(Module::NAME));
-	}
+	const LIBRARY_COUNT		= 3;
+	const CORE_LIBRARY_ID	= 'org.foomo.core';
+	const MX_LIBRARY_ID		= 'org.foomo.mx';
 }

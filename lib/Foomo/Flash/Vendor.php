@@ -47,7 +47,7 @@ class Vendor
 		if (is_null($module)) {
 			$configs = array_merge($configs, \Foomo\Config::getConfs(Vendor\Config::NAME));
 		} else {
-			$configs[] = \Foomo\Config::getConf($module, \Foomo\Config::getConfs(Vendor\Config::NAME));
+			$configs[] = \Foomo\Config::getConf($module, Vendor\Config::NAME);
 		}
 
 		foreach ($configs as $config) {
