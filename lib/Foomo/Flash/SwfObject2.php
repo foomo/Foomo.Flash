@@ -82,9 +82,9 @@ class SWFObject2 {
 	 * @param string $height
 	 * @param string $version
 	 * @param string $expressInstallSWF
-	 * @param RadSWFObject2FlashVars $flashVars
-	 * @param RadSWFObject2Params $params
-	 * @param RadSWFObject2Attributes $attributes
+	 * @param \Foomo\Flash\SwfObject2\FlashVars $flashVars
+	 * @param \Foomo\Flash\SwfObject2\Params $params
+	 * @param \Foomo\Flash\SwfObject2\Attributes $attributes
 	 */
 	public function __construct($swf, $containerId, $width, $height, $version, $expressInstallSWF=null, FlashVars $flashVars=null, Params $params=null, Attributes $attributes=null)
 	{
