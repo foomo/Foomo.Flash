@@ -29,18 +29,18 @@
 		<table>
 			<thead>
 				<tr>
-					<td>Name</td>
-					<td>Description</td>
-					<td>Dependencies</td>
-					<td>Version</td>
-					<td></td>
-					<td></td>
+					<th>Name</th>
+					<th>Description</th>
+					<th>Dependencies</th>
+					<th>Version</th>
+					<th></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 	<? foreach($model->libraryProjects as $group => $libraryProjects): ?>
 				<tr>
-					<td colspan="6"><h2><?= $group ?></h2></td>
+					<td colspan="6" class="tableInnerHead"><h3><?= $group ?></h3></td>
 				</tr>
 	<? foreach($libraryProjects as $libraryProject): ?>
 				<tr>

@@ -55,9 +55,18 @@ class PHPUtils
 	 * @param string $type
 	 * @return bool
 	 */
+	public static function isArray($type)
+	{
+		return (substr($type, -2) == '[]');
+	}
+
+	/**
+	 * @param string $type
+	 * @return bool
+	 */
 	public static function isASStandardType($type)
 	{
-		return isset(self::$standardTypes[\strtolower($type)]);
+		return (self::isArray($type) || isset(self::$standardTypes[\strtolower($type)]));
 	}
 
 	/**
@@ -70,7 +79,7 @@ class PHPUtils
 	{
 		$asType = '*';
 		# check if it's a typed array
-		if ((substr($type, strlen($type) - 2) == '[]')) {
+		if ((substr($type, -2) == '[]')) {
 			$asType = 'Array';
 		} else if (self::isASStandardType($type)) {
 			$asType = self::$standardTypes[\strtolower($type)];
@@ -87,6 +96,28 @@ class PHPUtils
 			}
 		}
 		return $asType;
+	}
+
+	/**
+	 * @param string $type
+	 * @return bool
+	 */
+	public static function isASArrayStandardType($type)
+	{
+		if (!self::isArray($type)) trigger_error($type . '  is not an array');
+		return self::isASStandardType(substr($type, 0, -2));
+	}
+
+	/**
+	 * map a type between php and ActionScript
+	 *
+	 * @param string $type php class name | type
+	 * @return string ActionScript class name | type
+	 */
+	public static function getASArrayType($type)
+	{
+		if (!self::isArray($type)) trigger_error($type . '  is not an array');
+		return self::getASType(substr($type, 0, -2));
 	}
 
 	/**
