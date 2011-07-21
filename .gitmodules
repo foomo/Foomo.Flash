@@ -1,9 +1,9 @@
 [submodule "vendor/org.foomo/org.foomo.core"]
 	path = vendor/org.foomo/org.foomo.core
-	url = ssh://git.bestbytes.net/var/git/ASLibrary-foomo_core.git
+	url = ../ASLibrary-foomo_core.git
 [submodule "vendor/org.foomo/org.foomo.mx"]
 	path = vendor/org.foomo/org.foomo.mx
-	url = ssh://git.bestbytes.net/var/git/ASLibrary-foomo_mx.git
+	url = ../ASLibrary-foomo_mx.git
 [submodule "vendor/org.foomo/org.foomo.rpc"]
 	path = vendor/org.foomo/org.foomo.rpc
-	url = ssh://git.bestbytes.net/var/git/ASLibrary-foomo_rpc.git
+	url = ../ASLibrary-foomo_rpc.git
