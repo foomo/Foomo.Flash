@@ -99,47 +99,22 @@ class SWFObject2 {
 		$this->attributes = (is_null($attributes)) ? new Attributes() : $attributes;
 	}
 
-	/**
-	 * solve js dependecies
-	 * @param \Foomo\HTMLDocument $doc if you do not use the default
-	 */
-	public static function addJsToHTMLDoc(\Foomo\HTMLDocument $doc = null)
-	{
-		if (is_null($doc)) {
-			$doc = \Foomo\HTMLDocument::getInstance();
-		}
-		$doc->addJavascripts(
-				array(
-					\Foomo\ROOT_HTTP . '/js/vendor/swfobject.js',
-					\Foomo\ROOT_HTTP . '/js/vendor/swfmacmousewheel.js',
-				//\Foomo\ROOT_HTTP . '/js/vendor',
-				)
-		);
-	}
+	//---------------------------------------------------------------------------------------------
+	// ~ Public methods
+	//---------------------------------------------------------------------------------------------
 
 	/**
 	 * return string JavaScript
 	 */
 	public function embedSWF()
 	{
-		//var_dump($this->params->getParams());
 		static $i = 0;
 		$js = '';
-		$js .= 'var flashvars_' . $i . '  = ' . $this->serialize($this->flashVars->getVars()) . ';' . PHP_EOL;
-		$js .= 'var params_' . $i . '     = ' . $this->serialize($this->params->getParams()) . ';' . PHP_EOL;
-		$js .= 'var attributes_' . $i . ' = ' . $this->serialize($this->attributes->getAttributes()) . ';' . PHP_EOL;
+		$js .= 'var flashvars_' . $i . '  = ' . json_encode($this->flashVars->getVars()) . ';' . PHP_EOL;
+		$js .= 'var params_' . $i . '     = ' . json_encode($this->params->getParams()) . ';' . PHP_EOL;
+		$js .= 'var attributes_' . $i . ' = ' . json_encode($this->attributes->getAttributes()) . ';' . PHP_EOL;
 		$js .= 'var so_' . $i . '         = swfobject.embedSWF("' . $this->swf . '", "' . $this->containerId . '", "' . $this->width . '", "' . $this->height . '", "' . $this->version . '", ' . $this->expressInstallSWF . ', flashvars_' . $i . ', params_' . $i . ', attributes_' . $i . ');' . PHP_EOL;
 		$i++;
 		return $js;
 	}
-
-	/**
-	 * @param array $data
-	 * @return string
-	 */
-	private function serialize($data)
-	{
-		return json_encode($data);
-	}
-
 }
