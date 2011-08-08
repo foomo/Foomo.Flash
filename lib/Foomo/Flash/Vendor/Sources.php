@@ -86,7 +86,11 @@ class Sources
 	 */
 	public function getLibraryProject($libraryProjectId)
 	{
-		return $this->libraryProjects[$libraryProjectId];
+		if(isset($this->libraryProjects[$libraryProjectId])) {
+			return $this->libraryProjects[$libraryProjectId];
+		} else {
+			trigger_error('unknown libraryproject' . $libraryProjectId . ' not found in: ' . implode(', ', array_keys($this->libraryProjects)));
+		}
 	}
 
 	/**
