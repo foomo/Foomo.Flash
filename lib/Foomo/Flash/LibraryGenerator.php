@@ -81,7 +81,7 @@ class LibraryGenerator
 		$fileName = tempnam(\Foomo\Flash\Module::getTempDir(), 'libraryGenerator-swc-');
 		$report .= $compc->compileSwc($fileName)->report;
 
-		if (!file_exists($fileName)) {
+		if ($compc->exitStatus !== 0 || !file_exists($fileName)) {
 			throw new \Exception(
 					'Adobe Compc (Flex Component Compiler) failed to create the swc.' . PHP_EOL .
 					PHP_EOL .
