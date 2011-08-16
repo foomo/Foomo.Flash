@@ -63,7 +63,7 @@ class Config extends \Foomo\Config\AbstractConfig
 	 */
 	public function getEntry($id)
 	{
-		if (null == $entry = $this->entries[$id]) throw new \Exception('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!');
+		if (null == $entry = $this->entries[$id]) trigger_error('Config ' . $id . ' does not exist! Check your Foomo.Flash.flex config!', E_USER_ERROR);
 		$ret = \Foomo\Flash\Compiler\Config\Entry::create(
 				$id,
 				$entry['name'],

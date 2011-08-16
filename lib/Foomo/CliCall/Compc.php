@@ -126,6 +126,7 @@ class Compc extends \Foomo\CliCall
 	 */
 	public function compileSwc($filename, $debug=true, $optimize=false)
 	{
+		$this->arguments = array();
 		$this->prepareArguments();
 		$this->addArguments(array('-output', $filename));
 		$this->addArguments(array('-debug=' . (($debug) ? 'true' : 'false'), '-optimize=' . (($optimize) ? 'true' : 'false')));
@@ -141,8 +142,9 @@ class Compc extends \Foomo\CliCall
 	 */
 	public function compileSwf($filename, $debug=true, $optimize=false)
 	{
+		$this->arguments = array();
 		$this->prepareArguments();
-		$this->addArguments(array('-directory', '-output', $filename));
+		$this->addArguments(array('-output', $filename));
 		$this->addArguments(array('-debug=' . (($debug) ? 'true' : 'false'), '-optimize=' . (($optimize) ? 'true' : 'false')));
 		$this->execute();
 		return $this;
