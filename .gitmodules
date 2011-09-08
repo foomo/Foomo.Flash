@@ -7,3 +7,9 @@
 [submodule "vendor/org.foomo/org.foomo.rpc"]
 	path = vendor/org.foomo/org.foomo.rpc
 	url = ../ASLibrary-foomo_rpc.git
+[submodule "vendor/org.foomo/org.foomo.as3"]
+	path = vendor/org.foomo/org.foomo.as3
+	url = ../ASLibrary-foomo_as3.git
+[submodule "vendor/org.foomo/org.foomo.spark"]
+	path = vendor/org.foomo/org.foomo.spark
+	url = ../ASLibrary-foomo_spark.git
