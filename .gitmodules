@@ -13,3 +13,6 @@
 [submodule "vendor/org.foomo/org.foomo.spark"]
 	path = vendor/org.foomo/org.foomo.spark
 	url = ../ASLibrary-foomo_spark.git
+[submodule "vendor/org.foomo/org.foomo.air"]
+	path = vendor/org.foomo/org.foomo.air
+	url = ../ASLibrary-foomo_air.git
