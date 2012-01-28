@@ -182,15 +182,26 @@ class Compc extends \Foomo\CliCall
 	//---------------------------------------------------------------------------------------------
 
 	/**
+	 * create call
+	 * 
 	 * @param string $flexsdk
 	 * @param string[] $sourcePaths
 	 * @param string[] $externalLibraryPaths
 	 * @param string[] $includeSources
 	 * @param string[] $includeClasses
+	 * 
 	 * @return Foomo\CliCall\Compc
 	 */
-	public static function create($flexsdk, $sourcePaths=array(), $externalLibraryPaths=array(), $includeSources=array(), $includeClasses=array())
+	public static function create()
 	{
-		return new self($flexsdk, $sourcePaths, $externalLibraryPaths, $includeSources, $includeClasses);
+		$argArray = func_get_args();
+		return new self(
+			func_get_arg(0),
+			self::extractOptionalArg($argArray, 1, array()),
+			self::extractOptionalArg($argArray, 2, array()),
+			self::extractOptionalArg($argArray, 3, array()),	
+			self::extractOptionalArg($argArray, 4, array())
+		);
 	}
+	
 }

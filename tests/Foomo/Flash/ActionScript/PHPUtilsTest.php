@@ -77,4 +77,10 @@ class PHPUtilsTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(PHPUtils::getASTypeDefaultValue('Exception'), 'null');
 		$this->assertEquals(PHPUtils::getASTypeDefaultValue('Foomo\\Services\\PHPUtils'), 'null');
 	}
+	public function testCamelCaseToConstant()
+	{
+		$this->assertEquals('TEST_TEST', PHPUtils::camelCaseToConstant('testTest'));
+		$this->assertEquals('TEST_TEST_TEST', PHPUtils::camelCaseToConstant('testTestTest'));
+		$this->assertEquals('SOME_SAD_STORY', PHPUtils::camelCaseToConstant('SomeSADStory'));
+	}
 }

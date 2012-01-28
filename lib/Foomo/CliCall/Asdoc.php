@@ -142,14 +142,23 @@ class Asdoc extends \Foomo\CliCall
 	//---------------------------------------------------------------------------------------------
 
 	/**
+	 * create call
+	 * 
 	 * @param string $flexsdk
 	 * @param string[] $sourcePaths
 	 * @param string[] $libraryPaths
 	 * @param string[] $docSources
+	 * 
 	 * @return Foomo\CliCall\Asdoc
 	 */
-	public static function create($flexsdk, $sourcePaths=array(), $libraryPaths=array(), $docSources=array())
+	public static function create()
 	{
-		return new self($flexsdk, $sourcePaths, $libraryPaths, $docSources);
+		$argArray = func_get_args();
+		return new self(
+			func_get_arg(0),
+			self::extractOptionalArg($argArray, 1, array()),
+			self::extractOptionalArg($argArray, 2, array()),
+			self::extractOptionalArg($argArray, 3, array())
+		);
 	}
 }

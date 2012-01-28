@@ -97,7 +97,51 @@ class PHPUtils
 		}
 		return $asType;
 	}
-
+	public static function camelCaseToConstant($name)
+	{
+		$ret = '';
+		$cleanName = '';
+		$upperBlock = false;
+		for($i=0;$i<strlen($name);$i++) {
+			$char = substr($name, $i, 1);
+			if($i + 1 <strlen($name)) {
+				$nextChar = substr($name, $i+1, 1);
+				$nextCharLowerCase = (strtolower($nextChar) == $nextChar);
+			} else {
+				$nextChar = null;
+				$nextCharLowerCase = false;
+			}
+			$upperCase = (strtoupper($char) == $char);
+			if($upperBlock && !$nextCharLowerCase) {
+				$cleanName .= strtolower($char);
+			} else {
+				$cleanName .= $char;
+			}
+			if($upperCase) {
+				$upperBlock = true;
+			} else {
+				$upperBlock = false;
+			}
+		}
+		$name = $cleanName;
+		$change = false;
+		$lastCase = null;
+		$case = null;
+		for($i=0;$i<strlen($name);$i++) {
+			$char = substr($name, $i, 1);
+			$case = ($char != strtoupper($char))?'lowerCase':'upperCase';
+			if(is_null($lastCase)) {
+				$lastCase = $case;
+			}
+			$change = ($case != $lastCase);
+			if($change && $case == 'upperCase') {
+				$ret .= '_';
+			}
+			$lastCase = $case;
+			$ret .= strtoupper($char);
+		}
+		return $ret;
+	}
 	/**
 	 * @param string $type
 	 * @return bool
