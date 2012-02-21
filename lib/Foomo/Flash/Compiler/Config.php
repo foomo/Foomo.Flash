@@ -73,7 +73,7 @@ class Config extends \Foomo\Config\AbstractConfig
 		);
 		if (!is_dir($ret->sdkPath)) throw new \Exception('Configured flex SDK path does not exist ' . $ret->sdkPath);
 		foreach ($ret->sourcePaths as $source) if (!file_exists($source)) throw new \Exception('Configured source ' . $source . ' does not exist!');
-		foreach ($ret->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new \Exception('Configured source ' . $source . ' does not exist!');
+		foreach ($ret->externalLibs as $externalLib) if (!file_exists($externalLib)) throw new \Exception('Configured externalLib ' . $externalLib . ' does not exist!');
 		return $ret;
 	}
 

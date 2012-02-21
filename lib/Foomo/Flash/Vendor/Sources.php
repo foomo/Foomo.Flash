@@ -74,9 +74,9 @@ class Sources
 	 */
 	public function updateProjects()
 	{
-		$htis->libraryProjects = array();
-		$htis->implementationProjects = array();
-		$htis->implementationProjectApplications = array();
+		$this->libraryProjects = array();
+		$this->implementationProjects = array();
+		$this->implementationProjectApplications = array();
 		$this->scan();
 	}
 
@@ -89,7 +89,7 @@ class Sources
 		if(isset($this->libraryProjects[$libraryProjectId])) {
 			return $this->libraryProjects[$libraryProjectId];
 		} else {
-			trigger_error('unknown libraryproject' . $libraryProjectId . ' not found in: ' . implode(', ', array_keys($this->libraryProjects)));
+			trigger_error('unknown libraryproject "' . $libraryProjectId . '" not found in: ' . implode(', ', array_keys($this->libraryProjects)));
 		}
 	}
 
