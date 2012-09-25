@@ -183,14 +183,14 @@ class Compc extends \Foomo\CliCall
 
 	/**
 	 * create call
-	 * 
+	 *
 	 * @param string $flexsdk
 	 * @param string[] $sourcePaths
 	 * @param string[] $externalLibraryPaths
 	 * @param string[] $includeSources
 	 * @param string[] $includeClasses
-	 * 
-	 * @return Foomo\CliCall\Compc
+	 *
+	 * @return \Foomo\CliCall\Compc
 	 */
 	public static function create()
 	{
@@ -199,9 +199,9 @@ class Compc extends \Foomo\CliCall
 			func_get_arg(0),
 			self::extractOptionalArg($argArray, 1, array()),
 			self::extractOptionalArg($argArray, 2, array()),
-			self::extractOptionalArg($argArray, 3, array()),	
+			self::extractOptionalArg($argArray, 3, array()),
 			self::extractOptionalArg($argArray, 4, array())
 		);
 	}
-	
+
 }

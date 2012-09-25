@@ -49,6 +49,10 @@ class Controller
 		$this->model->presets = \Foomo\Flash\Module::getLibraryGeneratorConfig()->getPresets();
 	}
 
+	/**
+	 * @param string $projectLibraryId
+	 * @param string $sdkId
+	 */
 	public function actionGetLibrary($projectLibraryId, $sdkId)
 	{
 		$filename = \Foomo\Flash\LibraryGenerator::compile(array($projectLibraryId), $sdkId, $this->model->report);
@@ -61,8 +65,7 @@ class Controller
 	}
 
 	/**
-	 * @param string $name
-	 * @param string[] $projectLibraryIds
+	 * @param string $sdkId
 	 */
 	public function actionGetCustomLibrary($sdkId)
 	{
@@ -79,6 +82,8 @@ class Controller
 
 	/**
 	 * Renders an ant file and pumps it out
+	 *
+	 * @param string $sdkId
 	 */
 	public function actionGetAntBuildFile($sdkId)
 	{

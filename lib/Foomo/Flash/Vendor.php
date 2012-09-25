@@ -27,18 +27,12 @@ namespace Foomo\Flash;
 class Vendor
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Static variables
-	//---------------------------------------------------------------------------------------------
-
-	private static $sources = array();
-
-	//---------------------------------------------------------------------------------------------
 	// ~ Public methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
 	 * @param string $module
-	 * @return Foomo\Flash\Vendors\Sources
+	 * @return \Foomo\Flash\Vendors\Sources
 	 */
 	public static function getSources($module=null)
 	{
@@ -55,6 +49,6 @@ class Vendor
 			$pathnames = array_merge($pathnames, $config->getPathnames());
 		}
 
-		return new Vendor\Sources($pathnames);
+		return new \Foomo\Flash\Vendor\Sources($pathnames);
 	}
 }

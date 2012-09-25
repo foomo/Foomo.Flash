@@ -41,47 +41,38 @@ class LibraryGenerator
 		$flexConfigEntry = \Foomo\Flash\Module::getCompilerConfig()->getEntry($configId);
 
 		$compc = \Foomo\CliCall\Compc::create(
-					$flexConfigEntry->sdkPath,
-					$flexConfigEntry->sourcePaths,
-					$flexConfigEntry->externalLibs,
-					$flexConfigEntry->sourcePaths
-				);
+			$flexConfigEntry->sdkPath,
+			$flexConfigEntry->sourcePaths,
+			$flexConfigEntry->externalLibs,
+			$flexConfigEntry->sourcePaths
+		);
 
 		$includePaths = $flexConfigEntry->sourcePaths;
 		$sourcePaths = $flexConfigEntry->sourcePaths;
 		$externalLibs = $flexConfigEntry->externalLibs;
 
-		$sources = Vendor::getSources();
-		foreach ($libraryProjectIds as $libraryProjectId) {
-			# include library sources
-			$libraryProject = $sources->getLibraryProject($libraryProjectId);
-			$compc->addSourcePaths(array($libraryProject->pathname . '/src'));
-			$compc->addIncludeSources(array($libraryProject->pathname . '/src'));
+		# set compc's paths
+		self::includeLibrayIds($libraryProjectIds, \Foomo\Flash\Vendor::getSources(), $compc);
 
-			# include library dependencies
-			foreach ($libraryProject->dependencies as $depedencyLibraryProjectId) {
-				$dependencyLibraryProject = $sources->getLibraryProject($depedencyLibraryProjectId);
-				$compc->addSourcePaths(array($dependencyLibraryProject->pathname . '/src'));
-				$compc->addIncludeSources(array($dependencyLibraryProject->pathname . '/src'));
+		# get unigue file id
+		$filenameId = \implode('-', $libraryProjectIds) . '-' . $configId;
 
-				# check for special library config
-				if (null == $dependencyLibraryConfig = $sources->getLibrary($depedencyLibraryProjectId)) continue;
-				$compc->addSourcePaths($dependencyLibraryConfig->getSources(true));
-				$compc->addIncludeSources($dependencyLibraryConfig->getSources(true));
-				$compc->addExternalLibraryPaths($dependencyLibraryConfig->getExternals(true));
-			}
+		# get filename
+		$filename = \Foomo\Flash\Module::getVarDir('libraries') . '/' . \md5($filenameId);
 
-			# check for special library config
-			if (null == $libraryConfig = $sources->getLibrary($libraryProjectId)) continue;
-			$compc->addSourcePaths($libraryConfig->getSources(true));
-			$compc->addIncludeSources($libraryConfig->getSources(true));
-			$compc->addExternalLibraryPaths($libraryConfig->getExternals(true));
+		# check if file exists
+		if (\file_exists($filename)) {
+			# do return filename if compiled version is newer than it's sources
+			$deps = \array_unique(\array_merge($compc->sourcePaths, $compc->externalLibraryPaths));
+			$cmd = \Foomo\CliCall\Find::create($deps)->type('f')->newer($filename)->execute();
+			if (empty($cmd->stdOut)) return $filename;
 		}
 
-		$fileName = tempnam(\Foomo\Flash\Module::getTempDir(), 'libraryGenerator-swc-');
-		$report .= $compc->compileSwc($fileName)->report;
+		# update report
+		$report .= $compc->compileSwc($filename)->report;
 
-		if ($compc->exitStatus !== 0 || !file_exists($fileName)) {
+		# compile
+		if ($compc->exitStatus !== 0 || !file_exists($filename)) {
 			throw new \Exception(
 					'Adobe Compc (Flex Component Compiler) failed to create the swc.' . PHP_EOL .
 					PHP_EOL .
@@ -99,7 +90,7 @@ class LibraryGenerator
 			);
 		}
 
-		return $fileName;
+		return $filename;
 	}
 
 	/**
@@ -109,18 +100,46 @@ class LibraryGenerator
 	{
 		$sdk = \Foomo\Flash\Module::getCompilerConfig()->getEntry($configId);
 		$view = Module::getView(
-				'Foomo\\Flash\\LibraryGenerator',
-				'LibraryGenerator/AntBuildFile',
-				array(
-					'configId' => $sdk->id,
-					'libraryProjectIds' => $libraryProjectIds,
-					'libraryProjects' => $libraryProjects,
-					'sources' => $sources,
-					'name' => $name
-				)
+			'Foomo\\Flash\\LibraryGenerator',
+			'LibraryGenerator/AntBuildFile',
+			array(
+				'configId' => $sdk->id,
+				'libraryProjectIds' => $libraryProjectIds,
+				'libraryProjects' => $libraryProjects,
+				'sources' => $sources,
+				'name' => $name
+			)
 		);
-		$fileName = tempnam(\Foomo\Flash\Module::getTempDir(), 'libraryGenerator-ant-');
-		file_put_contents($fileName, $view->render());
-		return $fileName;
+		$filename = tempnam(\Foomo\Flash\Module::getTempDir(), 'libraryGenerator-ant-');
+		file_put_contents($filename, $view->render());
+		return $filename;
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// Private static methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @param string[] $libraryIds
+	 * @param \Foomo\Flash\Vendors\Sources $sources
+	 * @param \Foomo\CliCall\Compc $compc
+	 */
+	private static function includeLibrayIds($libraryIds, $sources, $compc)
+	{
+		foreach ($libraryIds as $libraryId) {
+			# include library sources
+			$libraryProject = $sources->getLibraryProject($libraryId);
+			$compc->addSourcePaths(array($libraryProject->pathname . '/src'));
+			$compc->addIncludeSources(array($libraryProject->pathname . '/src'));
+
+			# include library dependencies
+			self::includeLibrayIds($libraryProject->dependencies, $sources, $compc);
+
+			# check for special library config
+			if (null == $libraryConfig = $sources->getLibrary($libraryId)) continue;
+			$compc->addSourcePaths($libraryConfig->getSources(true));
+			$compc->addIncludeSources($libraryConfig->getSources(true));
+			$compc->addExternalLibraryPaths($libraryConfig->getExternals(true));
+		}
 	}
 }
